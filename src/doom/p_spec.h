@@ -34,6 +34,12 @@ extern	int	levelTimeCount;
 //      Define values for map objects
 #define MO_TELEPORTMAN          14
 
+// [boom] for generalised sector types
+#define DAMAGE_MASK   0x60
+#define DAMAGE_SHIFT  5
+#define LIGHT_MASK    31
+#define SECRET_MASK   0x80
+#define SECRET_SHIFT  7
 
 // at game start
 void    P_InitPicAnims (void);
