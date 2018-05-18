@@ -146,7 +146,8 @@ typedef PACKED_STRUCT (
 // Set if already seen, thus drawn in automap.
 #define ML_MAPPED		256
 
-
+// [boom] implement PassThru linedef flag
+#define ML_PASSUSE 512
 
 
 // Sector definition, from editing.

@@ -1353,7 +1353,8 @@ boolean	PTR_UseTraverse (intercept_t* in)
     P_UseSpecialLine (usething, in->d.line, side);
 
     // can't use for than one special line in a row
-    return false;
+    // [boom] implement PassThru linedef flag
+    return in->d.line->flags & ML_PASSUSE ? true : false;
 }
 
 
