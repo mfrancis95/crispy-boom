@@ -937,13 +937,13 @@ void P_SpawnMapThing (mapthing_t* mthing)
     if (!netgame && (mthing->options & 16) )
 	return;
 
-    // [boom] "not deathmatch" thing flag
-    if (netgame && deathmatch && (mthing->options & 32))
-    return;
+    //jff 3/30/98 implement "not deathmatch" thing flag
+    if (netgame && deathmatch && (mthing->options & NOT_DEATHMATCH_MASK))
+        return;
 
-    // [boom] "not cooperative" thing flag
-    if (netgame && !deathmatch && (mthing->options & 64))
-    return;
+    //jff 3/30/98 implement "not cooperative" thing flag
+    if (netgame && !deathmatch && (mthing->options & NOT_COOPERATIVE_MASK))
+        return;
 		
     if (gameskill == sk_baby)
 	bit = 1;

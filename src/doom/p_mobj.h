@@ -36,8 +36,10 @@
 // Needs precompiled tables/data structures.
 #include "info.h"
 
-
-
+// [crispy-boom] implement "not deathmatch" thing flag
+#define NOT_DEATHMATCH_MASK     32
+// [crispy-boom] implement "not cooperative" thing flag
+#define NOT_COOPERATIVE_MASK    64
 
 
 

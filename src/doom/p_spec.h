@@ -34,7 +34,8 @@ extern	int	levelTimeCount;
 //      Define values for map objects
 #define MO_TELEPORTMAN          14
 
-// [boom] for generalised sector types
+//jff 3/14/98 add bits and shifts for generalized sector types
+
 #define DAMAGE_MASK   0x60
 #define DAMAGE_SHIFT  5
 #define LIGHT_MASK    31

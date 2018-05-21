@@ -146,8 +146,9 @@ typedef PACKED_STRUCT (
 // Set if already seen, thus drawn in automap.
 #define ML_MAPPED		256
 
-// [boom] implement PassThru linedef flag
-#define ML_PASSUSE 512
+//jff 3/21/98 Set if line absorbs use by player
+//allow multiple push/switch triggers to be used on one push
+#define ML_PASSUSE  512
 
 
 // Sector definition, from editing.

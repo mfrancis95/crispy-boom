@@ -1098,8 +1098,8 @@ void P_PlayerInSpecialSector (player_t* player)
 	return;	
 
     // Has hitten ground.
-    // [boom] support generalised sector types
-    if (sector->special < 32)
+    //jff add if to handle old vs generalized types
+    if (sector->special < 32) // regular sector specials
     {
     switch (sector->special)
     {
@@ -1173,51 +1173,51 @@ void P_PlayerInSpecialSector (player_t* player)
 	break;
     };
     }
-    else
+    else //jff 3/14/98 handle extended sector types for secrets and damage
     {
-    	switch ((sector->special & DAMAGE_MASK) >> DAMAGE_SHIFT)
-    	{
-    		case 1:
-    			// [crispy] no nukage damage with NOCLIP cheat
-				if (!player->powers[pw_ironfeet] && !(player->mo->flags & MF_NOCLIP))
-				    if (!(leveltime & 0x1f))
-					    P_DamageMobj (player->mo, NULL, NULL, 5);
-				break;
-    		case 2:
-    			// [crispy] no nukage damage with NOCLIP cheat
-				if (!player->powers[pw_ironfeet] && !(player->mo->flags & MF_NOCLIP))
-				    if (!(leveltime & 0x1f))
-					    P_DamageMobj (player->mo, NULL, NULL, 10);
-    			break;
-    		case 3:
-				// [crispy] no nukage damage with NOCLIP cheat
-				if ((!player->powers[pw_ironfeet]
-				    || (P_Random() < 5) ) && !(player->mo->flags & MF_NOCLIP))
-				{
-				    if (!(leveltime & 0x1f))
-					    P_DamageMobj (player->mo, NULL, NULL, 20);
-				}
-    		break;
-    	}
-    	if (sector->special & SECRET_MASK)
-    	{
-			// [crispy] show centered "Secret Revealed!" message
-			if (showMessages && crispy->secretmessage)
-			{
-			    int sfx_id;
+        switch ((sector->special & DAMAGE_MASK) >> DAMAGE_SHIFT)
+        {
+            case 1:
+                // [crispy] no nukage damage with NOCLIP cheat
+                if (!player->powers[pw_ironfeet] && !(player->mo->flags & MF_NOCLIP))
+                    if (!(leveltime & 0x1f))
+                        P_DamageMobj (player->mo, NULL, NULL, 5);
+                break;
+            case 2:
+                // [crispy] no nukage damage with NOCLIP cheat
+                if (!player->powers[pw_ironfeet] && !(player->mo->flags & MF_NOCLIP))
+                    if (!(leveltime & 0x1f))
+                        P_DamageMobj (player->mo, NULL, NULL, 10);
+                break;
+            case 3:
+                // [crispy] no nukage damage with NOCLIP cheat
+                if ((!player->powers[pw_ironfeet]
+                    || (P_Random() < 5) ) && !(player->mo->flags & MF_NOCLIP))
+                {
+                    if (!(leveltime & 0x1f))
+                        P_DamageMobj (player->mo, NULL, NULL, 20);
+                }
+            break;
+        }
+        if (sector->special & SECRET_MASK)
+        {
+            // [crispy] show centered "Secret Revealed!" message
+            if (showMessages && crispy->secretmessage)
+            {
+                int sfx_id;
 
-			    // [crispy] play DSSECRET if available
-			    sfx_id = I_GetSfxLumpNum(&S_sfx[sfx_secret]) != -1 ? sfx_secret : sfx_itmbk;
+                // [crispy] play DSSECRET if available
+                sfx_id = I_GetSfxLumpNum(&S_sfx[sfx_secret]) != -1 ? sfx_secret : sfx_itmbk;
 
-			    player->centermessage = HUSTR_SECRETFOUND;
-			    if (player == &players[consoleplayer])
-			        S_StartSound(NULL, sfx_id);
-			}
-    		player->secretcount++;
-    		sector->special &= ~SECRET_MASK;
-    		if (sector->special < 32)
-    			sector->special = 0;
-    	}
+                player->centermessage = HUSTR_SECRETFOUND;
+                if (player == &players[consoleplayer])
+                    S_StartSound(NULL, sfx_id);
+            }
+            player->secretcount++;
+            sector->special &= ~SECRET_MASK;
+            if (sector->special < 32) // if all extended bits clear,
+                sector->special = 0;  // sector is not special anymore
+        }
     }
 }
 
@@ -1557,11 +1557,9 @@ void P_SpawnSpecials (void)
 	if (!sector->special)
 	    continue;
 
-	// [boom] support generalised sector types
-	if (sector->special & SECRET_MASK)
-	totalsecret++;
+    if (sector->special & SECRET_MASK) //jff 3/15/98 count extended
+    totalsecret++;                     // secret sectors too
 	
-	// [boom] support generalised sector types
 	switch (sector->special & LIGHT_MASK)
 	{
 	  case 1:
@@ -1592,9 +1590,8 @@ void P_SpawnSpecials (void)
 	    break;
 	  case 9:
 	    // SECRET SECTOR
-	    // [boom] support generalised sector types
-	    if (sector->special < 32)
-	    totalsecret++;
+        if (sector->special < 32) //jff 3/14/98 bits don't count unless not
+        totalsecret++;            // a generalized sector type
 	    break;
 	    
 	  case 10:
