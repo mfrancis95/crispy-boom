@@ -692,7 +692,20 @@ P_UseSpecialLine
 	EV_LightTurnOn(line,35);
 	P_ChangeSwitchTexture(line,1);
 	break;
-			
+
+      case 175:
+        // Close Door, Open in 30 secs
+        // 175 S1  EV_DoDoor(close30ThenOpen)
+        if (EV_DoDoor(line, vld_close30ThenOpen))
+          P_ChangeSwitchTexture(line,0);
+        break;
+
+      case 196:
+        // Close Door, Open in 30 secs
+        // 196 SR  EV_DoDoor(close30ThenOpen)
+        if (EV_DoDoor(line, vld_close30ThenOpen))
+          P_ChangeSwitchTexture(line,1);
+        break;
     }
 	
     return true;
